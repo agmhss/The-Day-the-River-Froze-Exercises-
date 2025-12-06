@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Interactive Worksheet — Time Travel to Ancient Tamil Nadu</title>
+<style>
+  :root{
+    --bg:#f4f7fb; --card:#fff; --accent:#0b63a7; --muted:#666;
+    --ok: #2a9d8f; --bad: #e76f51;
+  }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{background:linear-gradient(180deg,var(--bg),#eef6fc); padding:16px; color:#123;}
+  .container{max-width:980px;margin:0 auto;}
+  header{display:flex;gap:12px;align-items:center; margin-bottom:12px;}
+  header h1{font-size:1.25rem;margin:0;color:var(--accent);}
+  header p{margin:0;color:var(--muted);font-size:0.95rem;}
+
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:16px;}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr;} }
+
+  .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(15,40,60,0.06);overflow:hidden;}
+  h2{margin:0 0 8px 0;color:var(--accent);font-size:1rem}
+  label{display:block;margin:8px 0 4px 0;font-weight:600;font-size:0.95rem}
+  input[type="text"], textarea, select {
+    width:100%;padding:10px;border-radius:8px;border:1px solid #d4dbe6;background:#fbfeff;font-size:0.95rem;
+    box-sizing:border-box;
+    transition:box-shadow .18s ease,border-color .18s ease;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus{outline:none;box-shadow:0 6px 20px rgba(11,99,167,0.08);border-color:var(--accent)}
+  textarea{min-height:84px;resize:vertical}
+
+  .meta{font-size:0.82rem;color:var(--muted);margin-bottom:8px}
+
+  .images{display:flex;gap:8px;flex-wrap:wrap;}
+  .images img{width:calc(50% - 4px);border-radius:8px;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+  @media (max-width:500px){ .images img{width:100%;} }
+
+  /* Drag & Drop area */
+  .dnd-area{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;}
+  .word-list, .target-list{flex:1;min-width:180px;}
+  .draggable{
+    background:linear-gradient(180deg,#fff,#f5fbff);border-radius:8px;padding:10px;margin:8px 0;border:1px solid #e1e8f0;
+    cursor:grab; touch-action:none; user-select:none;
+    transition:transform .18s cubic-bezier(.2,.9,.3,1), box-shadow .12s;
+  }
+  .draggable:active{cursor:grabbing}
+  .target{
+    min-height:48px;border-radius:8px;border:2px dashed #e6eef7;padding:8px;margin:8px 0;background:linear-gradient(180deg,#fbfeff,#ffffff);
+    display:flex;align-items:center;justify-content:center; color:var(--muted);
+  }
+  .target.filled{border-style:solid;border-color:#cfe8ff;color:#08335a}
+
+  /* buttons and status */
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  button{background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+  button.secondary{background:#fff;color:var(--accent);border:1px solid #cfe8ff}
+  .status{margin-top:10px;font-weight:700;color:var(--muted)}
+
+  /* small animation */
+  .pulse{animation:pulse 1.2s infinite ease-in-out;}
+  @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+  .result-badge{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;}
+  .ok{background:linear-gradient(90deg,#dff6f1,#b9efe3);color:var(--ok)}
+  .bad{background:linear-gradient(90deg,#ffe6e0,#ffd1c6);color:var(--bad)}
+
+  footer{font-size:0.82rem;color:var(--muted);margin-top:18px;text-align:center}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>Interactive Worksheet — Time Travel to Ancient Tamil Nadu</h1>
+      <p>Auto-checking • Drag-and-drop matching • Animations & sound • Mobile friendly • Works on GitHub Pages</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- LEFT COLUMN -->
+    <div>
+      <!-- Images -->
+      <div class="card">
+        <h2>Images (tap to enlarge)</h2>
+        <div class="images" id="imageRow">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'><rect width='100%' height='100%' fill='%23f0f4f8'/><text x='50%' y='50%' font-size='28' text-anchor='middle' fill='%23033'>Map of Tamil Nadu (placeholder)</text></svg>"
+               alt="Map" onclick="openPreview(this.src)">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'><rect width='100%' height='100%' fill='%23f7fbff'/><text x='50%' y='50%' font-size='28' text-anchor='middle' fill='%23033'>Vaigai River (placeholder)</text></svg>"
+               alt="Vaigai" onclick="openPreview(this.src)">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'><rect width='100%' height='100%' fill='%23fffaf0'/><text x='50%' y='50%' font-size='28' text-anchor='middle' fill='%23033'>Ancient Village (placeholder)</text></svg>"
+               alt="Village" onclick="openPreview(this.src)">
+        </div>
+      </div>
+
+      <!-- A. Recall -->
+      <div class="card" id="recallCard">
+        <h2>A. Reading Recall</h2>
+        <p class="meta">Type: Individual • Level: LOT</p>
+
+        <label>1. Who is the main character in the story?</label>
+        <input id="q1" type="text" placeholder="e.g., Aravind">
+
+        <label>2. What machine allows him to travel through time?</label>
+        <input id="q2" type="text" placeholder="e.g., ChronoGate">
+
+        <label>3. Which river does he see when he arrives in the past?</label>
+        <input id="q3" type="text" placeholder="e.g., Vaigai">
+
+        <div class="controls">
+          <button onclick="autoCheck()">Check Answers</button>
+          <button class="secondary" onclick="clearRecall()">Clear</button>
+          <div id="recallStatus" class="status" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- C. Think & Answer -->
+      <div class="card">
+        <h2>C. Think & Answer</h2>
+        <p class="meta">Type: Individual • Level: MOT</p>
+        <label>1. Why do you think the poet-scholar’s words were important for the future?</label>
+        <textarea id="c1"></textarea>
+        <label>2. What surprised Aravind the most in the ancient village?</label>
+        <textarea id="c2"></textarea>
+        <label>3. Do you think time-travel should be allowed? Why or why not?</label>
+        <textarea id="c3"></textarea>
+      </div>
+
+      <!-- D. Creative Activity -->
+      <div class="card">
+        <h2>D. Creative Activity</h2>
+        <p class="meta">Type: Individual • Level: HOT</p>
+        <p><strong>Scaffolding:</strong> Sentence starters: "When I arrived…", "I saw…", "The people were…". Word bank: river, pulavar, villagers, fields, temple, crafts</p>
+        <label>Write 3–4 sentences describing your visit:</label>
+        <textarea id="d1" placeholder="When I arrived..."></textarea>
+      </div>
+
+      <!-- F. Extension -->
+      <div class="card">
+        <h2>F. Extension: Sangam Literature Link</h2>
+        <p class="meta">Type: Individual or Class • Level: HOT</p>
+        <p><strong>Scaffolding:</strong> Teacher reads poem aloud. Guiding Qs: Does the poem describe landscapes like the story? Does it show daily life?</p>
+        <label>Write the connection in one sentence:</label>
+        <input id="f1" type="text" placeholder="This poem connects because...">
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <aside>
+      <!-- B. Matching -->
+      <div class="card">
+        <h2>B. Drag & Drop Matching</h2>
+        <p class="meta">Type: Individual/Pair • Level: LOT/MOT</p>
+        <p style="margin:4px 0 8px 0;color:var(--muted)">Drag each meaning to the correct word. (Touch and hold on mobile)</p>
+
+        <div class="dnd-area">
+          <div class="word-list" aria-label="Words">
+            <div class="draggable" draggable="true" data-id="w1" id="w1">Tamilakam</div>
+            <div class="draggable" draggable="true" data-id="w2" id="w2">Pulavar</div>
+            <div class="draggable" draggable="true" data-id="w3" id="w3">ChronoGate</div>
+            <div class="draggable" draggable="true" data-id="w4" id="w4">Temporal disturbance</div>
+          </div>
+
+          <div class="target-list" aria-label="Targets" style="min-width:220px">
+            <div class="target" data-accept="w1" id="t1">A. A scholar/poet of ancient Tamil culture</div>
+            <div class="target" data-accept="w2" id="t2">B. The ancient Tamil region in South India</div>
+            <div class="target" data-accept="w3" id="t3">C. A disturbance or ripple in time</div>
+            <div class="target" data-accept="w4" id="t4">D. The time-travel machine</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button onclick="gradeMatching()">Grade Matching</button>
+          <button class="secondary" onclick="resetMatching()">Reset</button>
+          <div id="matchStatus" class="status"></div>
+        </div>
+      </div>
+
+      <!-- Quick tips and total -->
+      <div class="card pulse" id="scoreCard">
+        <h2>Quick Summary</h2>
+        <p class="meta">Tap 'Check Answers' and 'Grade Matching' to get instant feedback.</p>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <div id="totalScore" class="result-badge">Score: 0</div>
+          <button onclick="saveAll()">Save Answers (Local)</button>
+          <button class="secondary" onclick="loadAll()">Load Saved</button>
+        </div>
+        <div style="margin-top:10px;color:var(--muted);font-size:0.88rem">Works offline and on GitHub Pages.</div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>Tip: To host on GitHub Pages, place this <code>index.html</code> in your repository's root (or docs/) and enable Pages in repo settings.</footer>
+</div>
+
+<!-- Preview modal (simple) -->
+<div id="preview" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:9999">
+  <div style="max-width:94%;max-height:94%;background:#fff;border-radius:10px;padding:10px">
+    <button onclick="closePreview()" style="float:right;border:none;background:none;font-weight:700;font-size:1.1rem;cursor:pointer">✕</button>
+    <img id="previewImg" src="" style="width:100%;height:auto;border-radius:6px"/>
+  </div>
+</div>
+
+<script>
+/* -------------------
+   Sound: WebAudio short tones
+   ------------------- */
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function tone(freq,dur=0.12,type='sine',gain=0.18){
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.value = gain;
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start();
+  g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+  o.stop(audioCtx.currentTime + dur + 0.02);
+}
+
+/* -------------------
+   Auto-checking (Recall)
+   ------------------- */
+function normalize(s){ return (s||'').toString().trim().toLowerCase(); }
+function autoCheck(){
+  // Resume audio context on first interaction (mobile)
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  const a = normalize(document.getElementById('q1').value);
+  const b = normalize(document.getElementById('q2').value);
+  const c = normalize(document.getElementById('q3').value);
+  let score = 0;
+  if (a.includes('aravind') || a.includes('dr aravind')) score++;
+  if (b.includes('chrono') || b.includes('gate')) score++;
+  if (c.includes('vaigai')) score++;
+  document.getElementById('recallStatus').innerHTML = `Score: ${score} / 3`;
+  document.getElementById('totalScore').textContent = `Score: ${score}`;
+  if(score>=2){ tone(880,0.12,'sine',0.12); }
+  else { tone(220,0.14,'sawtooth',0.12); }
+}
+
+/* Clear recall fields */
+function clearRecall(){
+  document.getElementById('q1').value='';
+  document.getElementById('q2').value='';
+  document.getElementById('q3').value='';
+  document.getElementById('recallStatus').innerHTML='';
+  document.getElementById('totalScore').textContent = 'Score: 0';
+}
+
+/* -------------------
+   Drag & Drop implementation (mouse + touch)
+   ------------------- */
+
+let draggables = Array.from(document.querySelectorAll('.draggable'));
+let targets = Array.from(document.querySelectorAll('.target'));
+let dragState = { el:null, id:null, original:null, offsetX:0, offsetY:0 };
+
+function onPointerDown(e){
+  const target = e.target.closest('.draggable');
+  if(!target) return;
+  e.preventDefault();
+  dragState.el = target;
+  dragState.id = target.dataset.id;
+  dragState.original = target.parentNode;
+  const rect = target.getBoundingClientRect();
+  dragState.offsetX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  dragState.offsetY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+  target.style.position = 'fixed';
+  target.style.zIndex = 9999;
+  target.style.left = (rect.left)+'px';
+  target.style.top = (rect.top)+'px';
+  target.style.width = rect.width+'px';
+  target.style.boxShadow = "0 12px 30px rgba(17,70,120,0.18)";
+  document.addEventListener('mousemove', onPointerMove);
+  document.addEventListener('touchmove', onPointerMove,{passive:false});
+  document.addEventListener('mouseup', onPointerUp);
+  document.addEventListener('touchend', onPointerUp);
+}
+
+function onPointerMove(e){
+  if(!dragState.el) return;
+  e.preventDefault();
+  const clientX = (e.touches ? e.touches[0].clientX : e.clientX);
+  const clientY = (e.touches ? e.touches[0].clientY : e.clientY);
+  dragState.el.style.left = (clientX - dragState.offsetX) + 'px';
+  dragState.el.style.top = (clientY - dragState.offsetY) + 'px';
+}
+
+function onPointerUp(e){
+  if(!dragState.el) return;
+  // find intersecting target
+  const elRect = dragState.el.getBoundingClientRect();
+  let dropped = false;
+  for(const t of targets){
+    const tr = t.getBoundingClientRect();
+    if (!(elRect.right < tr.left || elRect.left > tr.right || elRect.bottom < tr.top || elRect.top > tr.bottom)){
+      // dropped on t
+      // remove any existing child with same data-id
+      // place element inside target (as child)
+      t.classList.add('filled');
+      dragState.el.style.position='relative';
+      dragState.el.style.left='';
+      dragState.el.style.top='';
+      dragState.el.style.width='';
+      dragState.el.style.boxShadow='';
+      t.innerHTML = ''; // replace placeholder with the draggable
+      t.appendChild(dragState.el);
+      dropped = true;
+      break;
+    }
+  }
+  if(!dropped){
+    // return to original container
+    dragState.original.appendChild(dragState.el);
+    dragState.el.style.position='';
+    dragState.el.style.left='';
+    dragState.el.style.top='';
+    dragState.el.style.width='';
+    dragState.el.style.boxShadow='';
+  }
+  // clean up
+  document.removeEventListener('mousemove', onPointerMove);
+  document.removeEventListener('touchmove', onPointerMove);
+  document.removeEventListener('mouseup', onPointerUp);
+  document.removeEventListener('touchend', onPointerUp);
+  dragState.el = null;
+  dragState.id = null;
+  dragState.original = null;
+}
+
+/* attach pointerdown to draggables */
+draggables.forEach(d => {
+  d.addEventListener('mousedown', onPointerDown);
+  d.addEventListener('touchstart', onPointerDown,{passive:false});
+});
+
+/* Reset / grade logic */
+function resetMatching(){
+  // move all draggables back to original list
+  const source = document.querySelector('.word-list');
+  const placeholders = {
+    t1: "A. A scholar/poet of ancient Tamil culture",
+    t2: "B. The ancient Tamil region in South India",
+    t3: "C. A disturbance or ripple in time",
+    t4: "D. The time-travel machine"
+  };
+  targets.forEach(t => {
+    t.classList.remove('filled');
+    const id = t.id;
+    t.innerHTML = placeholders[id] || '';
+  });
+  const allDrags = document.querySelectorAll('.draggable');
+  allDrags.forEach(d => source.appendChild(d));
+  document.getElementById('matchStatus').innerText = '';
+}
+
+function gradeMatching(){
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  let correct = 0;
+  // mapping: which draggable should be in which target
+  // we used data-accept attributes above in HTML but they are for demonstration; map logically:
+  // w1 -> Tamilakam meaning is B (Ancient Tamil region) so must be at target with text B -> that's t2
+  // w2 (Pulavar) -> A -> t1
+  // w3 (ChronoGate) -> D -> t4
+  // w4 (Temporal disturbance) -> C -> t3
+  const expected = {
+    't1':'w2', // A -> Pulavar
+    't2':'w1', // B -> Tamilakam
+    't3':'w4', // C -> Temporal disturbance
+    't4':'w3'  // D -> ChronoGate
+  };
+  targets.forEach(t => {
+    const child = t.querySelector('.draggable');
+    if(child && child.dataset.id === expected[t.id]) {
+      correct++;
+      t.style.borderColor = '#c7f0e6';
+    } else {
+      t.style.borderColor = '#ffd9d1';
+    }
+  });
+  const total = targets.length;
+  document.getElementById('matchStatus').innerHTML = `Matching: ${correct} / ${total}`;
+  document.getElementById('totalScore').textContent = `Score: ${correct}`;
+  if(correct === total){ tone(1000,0.14,'triangle',0.14); }
+  else if(correct >= total/2){ tone(660,0.12,'sine',0.12); }
+  else { tone(240,0.16,'sawtooth',0.12); }
+}
+
+/* Save & Load to localStorage */
+function saveAll(){
+  const state = {
+    q1: document.getElementById('q1').value,
+    q2: document.getElementById('q2').value,
+    q3: document.getElementById('q3').value,
+    c1: document.getElementById('c1').value,
+    c2: document.getElementById('c2').value,
+    c3: document.getElementById('c3').value,
+    d1: document.getElementById('d1').value,
+    f1: document.getElementById('f1').value,
+    // store matching: which draggable is in which target
+    matching: Array.from(targets).map(t => {
+      const ch = t.querySelector('.draggable');
+      return ch ? ch.id : null;
+    })
+  };
+  localStorage.setItem('worksheet_state', JSON.stringify(state));
+  document.getElementById('matchStatus').innerText = 'Saved locally';
+  tone(750,0.09,'sine',0.09);
+}
+
+function loadAll(){
+  const raw = localStorage.getItem('worksheet_state');
+  if(!raw) { document.getElementById('matchStatus').innerText = 'No saved data'; tone(220,0.09,'sawtooth',0.12); return; }
+  const state = JSON.parse(raw);
+  document.getElementById('q1').value = state.q1 || '';
+  document.getElementById('q2').value = state.q2 || '';
+  document.getElementById('q3').value = state.q3 || '';
+  document.getElementById('c1').value = state.c1 || '';
+  document.getElementById('c2').value = state.c2 || '';
+  document.getElementById('c3').value = state.c3 || '';
+  document.getElementById('d1').value = state.d1 || '';
+  document.getElementById('f1').value = state.f1 || '';
+  // reset matching then place draggables according to saved
+  resetMatching();
+  const source = document.querySelector('.word-list');
+  if(state.matching && Array.isArray(state.matching)){
+    state.matching.forEach((dragId, idx) => {
+      const target = targets[idx];
+      if(dragId){
+        const el = document.getElementById(dragId);
+        if(el) target.appendChild(el);
+        target.classList.add('filled');
+      }
+    });
+  }
+  document.getElementById('matchStatus').innerText = 'Loaded saved answers';
+  tone(880,0.09,'sine',0.09);
+}
+
+/* Image preview */
+function openPreview(src){
+  document.getElementById('previewImg').src = src;
+  document.getElementById('preview').style.display = 'flex';
+}
+function closePreview(){ document.getElementById('preview').style.display='none'; }
+
+/* Initialize placeholders if needed */
+resetMatching();
+
+/* Ensure touches don't scroll while dragging */
+document.addEventListener('touchmove', function(e){
+  if(dragState.el) e.preventDefault();
+},{passive:false});
+</script>
+</body>
+</html>
