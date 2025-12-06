@@ -102,10 +102,10 @@
         <input id="q1" type="text" placeholder="e.g., Aravind">
 
         <label>2. What machine allows him to travel through time?</label>
-        <input id="q2" type="text" placeholder="e.g., ChronoGate">
+        <input id="q2" type="text" placeholder="e.g., ChronoCart">
 
         <label>3. Which river does he see when he arrives in the past?</label>
-        <input id="q3" type="text" placeholder="e.g., Vaigai">
+        <input id="q3" type="text" placeholder="e.g., Kaveri">
 
         <div class="controls">
           <button onclick="autoCheck()">Check Answers</button>
@@ -120,7 +120,7 @@
         <p class="meta">Type: Individual • Level: MOT</p>
         <label>1. Why do you think the poet-scholar’s words were important for the future?</label>
         <textarea id="c1"></textarea>
-        <label>2. What surprised Aravind the most in the ancient village?</label>
+        <label>2. What surprised Raman the most in the ancient village?</label>
         <textarea id="c2"></textarea>
         <label>3. Do you think time-travel should be allowed? Why or why not?</label>
         <textarea id="c3"></textarea>
@@ -229,7 +229,7 @@ function autoCheck(){
   const b = normalize(document.getElementById('q2').value);
   const c = normalize(document.getElementById('q3').value);
   let score = 0;
-  if (a.includes('aravind') || a.includes('dr aravind')) score++;
+  if (a.includes('raman') || a.includes('dr.raman')) score++;
   if (b.includes('chrono') || b.includes('gate')) score++;
   if (c.includes('vaigai')) score++;
   document.getElementById('recallStatus').innerHTML = `Score: ${score} / 3`;
